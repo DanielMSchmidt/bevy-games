@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::common::Ship;
+use crate::common::{AngularVelocity, Ship, Velocity};
 
 pub struct RenderingPlugin;
 
@@ -18,7 +18,7 @@ fn spawn_scene(
     // Camera — pulled back and slightly above, looking at the origin
     commands.spawn((
         Camera3d::default(),
-        Transform::from_xyz(0.0, 15.0, 30.0).looking_at(Vec3::ZERO, Vec3::Y),
+        Transform::from_xyz(0.0, 15.0, 30.0).looking_at(Vec3::ZERO, Vec3::Z),
     ));
 
     // Directional light angled from above-right
@@ -31,11 +31,20 @@ fn spawn_scene(
         Transform::from_xyz(4.0, 8.0, 4.0).looking_at(Vec3::ZERO, Vec3::Y),
     ));
 
-    // Ship — cone primitive as a placeholder, tip pointing up (+Y)
-    commands.spawn((
-        Ship,
-        Mesh3d(meshes.add(Cone::new(0.5, 2.0))),
-        MeshMaterial3d(materials.add(Color::srgb(0.2, 0.9, 0.4))),
-        Transform::default(),
-    ));
+    let ship = commands
+        .spawn((
+            Ship,
+            Transform::default(),
+            Visibility::default(),
+            Velocity(Vec3::ZERO),
+            AngularVelocity(0.0),
+        ))
+        .id();
+    commands
+        .spawn((
+            Mesh3d(meshes.add(Cone::new(0.5, 2.0))),
+            MeshMaterial3d(materials.add(Color::srgb(0.2, 0.9, 0.4))),
+            Transform::default().with_rotation(Quat::from_rotation_x(f32::to_radians(-90.0))),
+        ))
+        .set_parent(ship);
 }
