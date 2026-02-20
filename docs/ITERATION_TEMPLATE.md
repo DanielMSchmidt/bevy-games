@@ -46,10 +46,26 @@ Implement inertial ship movement with velocity and angular velocity.
 
 (To be answered before coding)
 
-- What components are needed?
-- What systems are needed?
-- What resources (if any) are needed?
-- In which schedule should systems run?
+### Components
+- What new components are needed? (name, inner type, why)
+- Which module do they live in? (hint: if multiple systems share them, think `common`)
+- Which entities need these components attached at spawn time, and where does that spawn happen?
+
+### Systems
+- What systems are needed? (one per responsibility)
+- For each system:
+  - What module does it go in?
+  - What does it read? (Query components, Resources)
+  - What does it write?
+  - One sentence: what does it do?
+
+### Resources
+- What built-in Bevy resources are needed? (e.g. `Time`, `Input<KeyCode>`)
+- Any new resources required, or is entity-level component data sufficient?
+
+### Scheduling
+- Which schedule? (`Startup` / `Update` / `FixedUpdate`)
+- Does ordering between systems matter? If so, which must run before which and why?
 
 ---
 

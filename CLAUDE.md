@@ -71,7 +71,7 @@ If the user asks "how do I implement X?": first ask how they would approach it, 
 ## Development Workflow
 
 - Feature branches: `dev/<feature>`
-- Copy `docs/ITERATION_TEMPLATE.md` → `docs/iterations/<feature>.md` and fill it out **before coding**.
+- For each new iteration, generate a filled-out `docs/iterations/<feature>.md` based on `docs/ITERATION_TEMPLATE.md`. Tailor the questions to the specific feature — don't leave them generic. The user answers them before coding starts.
 - Each iteration: one clear task (30–90 min), with acceptance criteria, pitfalls, and which Bevy concepts are exercised.
 - Never merge without AI review. Never implement more than one feature per branch.
 
