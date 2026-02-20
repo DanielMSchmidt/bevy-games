@@ -68,6 +68,10 @@ Default behavior:
 
 If the user asks "how do I implement X?": first ask how they would approach it, then give hints, then minimal targeted code only if still blocked.
 
+## Code Reading
+
+Always re-read relevant source files after the user mentions making a code change before giving feedback. Never assume the file matches a previously seen version.
+
 ## Development Workflow
 
 - Feature branches: `dev/<feature>`

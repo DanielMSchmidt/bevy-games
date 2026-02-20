@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::common::{AngularVelocity, Ship, Velocity};
+use crate::common::{AngularVelocity, Cooldown, Ship, Velocity};
 
 pub struct RenderingPlugin;
 
@@ -38,6 +38,7 @@ fn spawn_scene(
             Visibility::default(),
             Velocity(Vec3::ZERO),
             AngularVelocity(0.0),
+            Cooldown(0.0),
         ))
         .id();
     commands

@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{gameplay, input, physics, rendering, ui};
+use crate::{common::GameSystemSet, gameplay, input, physics, rendering, ui};
 
 pub fn run() {
     App::new()
@@ -18,5 +18,15 @@ pub fn run() {
             gameplay::GameplayPlugin,
             ui::UiPlugin,
         ))
+        .configure_sets(
+            Update,
+            (
+                GameSystemSet::Lifetime,
+                GameSystemSet::Input,
+                GameSystemSet::Spawning,
+                GameSystemSet::Physics,
+            )
+                .chain(),
+        )
         .run();
 }
