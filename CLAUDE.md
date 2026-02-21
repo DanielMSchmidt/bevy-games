@@ -75,7 +75,7 @@ Always re-read relevant source files after the user mentions making a code chang
 ## Development Workflow
 
 - Feature branches: `dev/<feature>`
-- For each new iteration, generate a filled-out `docs/iterations/<feature>.md` based on `docs/ITERATION_TEMPLATE.md`. Tailor the questions to the specific feature — don't leave them generic. The user answers them before coding starts.
+- For each new iteration, **always create** `docs/iterations/<feature>.md` without being asked. Tailor the questions to the specific feature based on what has been discussed — don't leave them generic. The user answers them before coding starts.
 - Each iteration: one clear task (30–90 min), with acceptance criteria, pitfalls, and which Bevy concepts are exercised.
 - Never merge without AI review. Never implement more than one feature per branch.
 
