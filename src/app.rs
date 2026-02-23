@@ -25,6 +25,8 @@ pub fn run() {
                 GameSystemSet::Input,
                 GameSystemSet::Spawning,
                 GameSystemSet::Physics,
+                GameSystemSet::CollisionDetection,
+                GameSystemSet::CollisionResponse,
             )
                 .chain(),
         )

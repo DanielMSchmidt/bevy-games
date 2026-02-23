@@ -31,4 +31,6 @@ pub enum GameSystemSet {
     Input,
     Spawning,
     Physics,
+    CollisionDetection,
+    CollisionResponse,
 }
