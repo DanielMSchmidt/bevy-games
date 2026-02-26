@@ -1,0 +1,3 @@
+# Downloaded assets (fetch via ./scripts/fetch_assets.sh)
+assets/models/*.glb
+assets/models/*.gltf

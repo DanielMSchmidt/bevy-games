@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["bevy-asteroids"]
+members = ["bevy-asteroids", "bevy-space-rts"]
 
 # Shared profile settings — all member crates inherit these
 [profile.dev.package."*"]

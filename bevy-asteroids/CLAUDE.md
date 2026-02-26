@@ -44,6 +44,3 @@ src/
 6. Game state
 7. Polish
 
-## Review Checklist
-
-See `docs/REVIEW_CHECKLIST.md`.

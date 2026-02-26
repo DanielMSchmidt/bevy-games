@@ -7,6 +7,7 @@ A collection of games built with [Bevy](https://bevyengine.org/) to learn game d
 | Project | Description |
 |---------|-------------|
 | [bevy-asteroids](bevy-asteroids/) | 3D inertial Asteroids-like game |
+| [bevy-space-rts](bevy-space-rts/) | Top-down space RTS with base building and supply chains |
 
 ## Prerequisites
 
