@@ -10,11 +10,7 @@ impl Plugin for RenderingPlugin {
     }
 }
 
-fn spawn_scene(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-) {
+fn spawn_scene(mut commands: Commands) {
     // Camera — pulled back and slightly above, looking at the origin
     commands.spawn((
         Camera3d::default(),
@@ -30,22 +26,4 @@ fn spawn_scene(
         },
         Transform::from_xyz(4.0, 8.0, 4.0).looking_at(Vec3::ZERO, Vec3::Y),
     ));
-
-    let ship = commands
-        .spawn((
-            Ship,
-            Transform::default(),
-            Visibility::default(),
-            Velocity(Vec3::ZERO),
-            AngularVelocity(0.0),
-            Cooldown(0.0),
-        ))
-        .id();
-    commands
-        .spawn((
-            Mesh3d(meshes.add(Cone::new(0.5, 2.0))),
-            MeshMaterial3d(materials.add(Color::srgb(0.2, 0.9, 0.4))),
-            Transform::default().with_rotation(Quat::from_rotation_x(f32::to_radians(-90.0))),
-        ))
-        .set_parent(ship);
 }

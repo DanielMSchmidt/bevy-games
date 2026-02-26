@@ -1,6 +1,9 @@
 use bevy::prelude::*;
 
-use crate::{common::GameSystemSet, gameplay, input, physics, rendering, ui};
+use crate::{
+    common::{GameState, GameSystemSet},
+    gameplay, input, physics, rendering, ui,
+};
 
 pub fn run() {
     App::new()
@@ -28,7 +31,9 @@ pub fn run() {
                 GameSystemSet::CollisionDetection,
                 GameSystemSet::CollisionResponse,
             )
-                .chain(),
+                .chain()
+                .run_if(in_state(GameState::Playing)),
         )
+        .init_state::<GameState>()
         .run();
 }

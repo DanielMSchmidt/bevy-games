@@ -34,3 +34,18 @@ pub enum GameSystemSet {
     CollisionDetection,
     CollisionResponse,
 }
+
+#[derive(States, Debug, Clone, PartialEq, Eq, Hash)]
+pub enum GameState {
+    Playing,
+    GameOver,
+}
+
+impl Default for GameState {
+    fn default() -> Self {
+        GameState::Playing
+    }
+}
+
+#[derive(Component)]
+pub struct GameOverText;

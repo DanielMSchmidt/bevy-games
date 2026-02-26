@@ -1,9 +1,10 @@
 use std::{collections::HashSet, f32::consts::FRAC_PI_4};
 
 use crate::common::{
-    AngularVelocity, Asteroid, Bullet, GameSystemSet, Lifetime, Ship, Size, Velocity,
+    AngularVelocity, Asteroid, Bullet, Cooldown, GameOverText, GameState, GameSystemSet, Lifetime,
+    Ship, Size, Velocity,
 };
-use bevy::prelude::*;
+use bevy::{prelude::*, tasks::futures_lite::stream::NextFuture};
 use rand::prelude::*;
 
 const BULLET_SIZE: f32 = 0.2;
@@ -36,6 +37,12 @@ impl Plugin for GameplayPlugin {
             Update,
             handle_ship_asteroid_collision.in_set(GameSystemSet::CollisionResponse),
         );
+
+        app.add_systems(OnEnter(GameState::Playing), setup);
+        app.add_systems(OnExit(GameState::Playing), teardown);
+
+        app.add_systems(OnEnter(GameState::GameOver), show_game_over);
+        app.add_systems(OnExit(GameState::GameOver), remove_game_over);
     }
 }
 
@@ -194,14 +201,77 @@ fn handle_bullet_asteroid_collision(
 }
 
 fn handle_ship_asteroid_collision(
-    mut commands: Commands,
-    ship_query: Query<Entity, With<Ship>>,
     mut events: EventReader<AsteroidShipCollisionEvent>,
+    mut next_state: ResMut<NextState<GameState>>,
 ) {
     for _ in events.read() {
-        for ship_entity in &ship_query {
-            // For simplicity, just despawn the ship on collision
-            commands.entity(ship_entity).despawn_recursive();
-        }
+        next_state.set(GameState::GameOver);
+    }
+}
+
+fn setup(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+) {
+    let ship = commands
+        .spawn((
+            Ship,
+            Transform::default(),
+            Visibility::default(),
+            Velocity(Vec3::ZERO),
+            AngularVelocity(0.0),
+            Cooldown(0.0),
+        ))
+        .id();
+    commands
+        .spawn((
+            Mesh3d(meshes.add(Cone::new(0.5, 2.0))),
+            MeshMaterial3d(materials.add(Color::srgb(0.2, 0.9, 0.4))),
+            Transform::default().with_rotation(Quat::from_rotation_x(f32::to_radians(-90.0))),
+        ))
+        .set_parent(ship);
+}
+
+fn teardown(
+    mut commands: Commands,
+    ship_query: Query<Entity, With<Ship>>,
+    asteroid_query: Query<Entity, With<Asteroid>>,
+    bullet_query: Query<Entity, With<Bullet>>,
+) {
+    for ship_entity in &ship_query {
+        commands.entity(ship_entity).despawn_recursive();
+    }
+    for asteroid_entity in &asteroid_query {
+        commands.entity(asteroid_entity).despawn();
+    }
+    for bullet_entity in &bullet_query {
+        commands.entity(bullet_entity).despawn();
+    }
+}
+
+fn show_game_over(mut commands: Commands) {
+    commands.spawn((
+        GameOverText,
+        Text::new("Game Over\nPress R to restart"),
+        TextFont {
+            font_size: 60.0,
+            ..default()
+        },
+        TextColor(Color::WHITE),
+        // Center it on screen using Node
+        Node {
+            position_type: PositionType::Absolute,
+            left: Val::Percent(10.0),
+            top: Val::Percent(40.0),
+            ..default()
+        },
+        Visibility::default(),
+    ));
+}
+
+fn remove_game_over(mut commands: Commands, query: Query<Entity, With<GameOverText>>) {
+    for entity in &query {
+        commands.entity(entity).despawn();
     }
 }

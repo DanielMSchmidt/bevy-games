@@ -1,4 +1,4 @@
-use crate::common::{AngularVelocity, Cooldown, GameSystemSet, Ship, Velocity};
+use crate::common::{AngularVelocity, Cooldown, GameState, GameSystemSet, Ship, Velocity};
 use crate::gameplay::SpawnBulletEvent;
 use bevy::prelude::*;
 pub struct InputPlugin;
@@ -7,6 +7,8 @@ impl Plugin for InputPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Update, read_movement_input.in_set(GameSystemSet::Input));
         app.add_systems(Update, read_shooting_input.in_set(GameSystemSet::Input));
+
+        app.add_systems(Update, restart_on_game_over);
     }
 }
 
@@ -22,10 +24,10 @@ fn read_movement_input(
     time: Res<Time>,
 ) {
     let dt = time.delta_secs();
-    let up = keys.pressed(KeyCode::ArrowUp);
-    let down = keys.pressed(KeyCode::ArrowDown);
-    let left = keys.pressed(KeyCode::ArrowLeft);
-    let right = keys.pressed(KeyCode::ArrowRight);
+    let up = keys.pressed(KeyCode::ArrowUp) || keys.pressed(KeyCode::KeyW);
+    let down = keys.pressed(KeyCode::ArrowDown) || keys.pressed(KeyCode::KeyS);
+    let left = keys.pressed(KeyCode::ArrowLeft) || keys.pressed(KeyCode::KeyA);
+    let right = keys.pressed(KeyCode::ArrowRight) || keys.pressed(KeyCode::KeyD);
 
     for (transform, mut velocity, mut angular_velocity) in &mut query {
         if up {
@@ -64,5 +66,11 @@ fn read_shooting_input(
             });
             cooldown.0 = BULLET_COOLDOWN; // Reset cooldown
         }
+    }
+}
+
+fn restart_on_game_over(keys: Res<ButtonInput<KeyCode>>, mut state: ResMut<NextState<GameState>>) {
+    if keys.just_pressed(KeyCode::KeyR) {
+        state.set(GameState::Playing);
     }
 }
