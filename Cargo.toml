@@ -8,3 +8,8 @@ opt-level = 3
 
 [profile.dev]
 opt-level = 1
+
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"
+lto = true
