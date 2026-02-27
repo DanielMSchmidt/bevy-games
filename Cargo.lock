@@ -447,6 +447,7 @@ dependencies = [
  "bevy 0.15.1",
  "getrandom 0.3.4",
  "rand 0.8.5",
+ "uuid",
 ]
 
 [[package]]

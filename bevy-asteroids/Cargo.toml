@@ -7,3 +7,4 @@ edition = "2024"
 bevy = "0.15"
 rand = "0.8.0"
 getrandom = { version = "0.3", features = ["wasm_js"] }
+uuid = { version = "1", features = ["js"] }
